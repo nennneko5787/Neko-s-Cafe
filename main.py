@@ -114,7 +114,6 @@ async def on_ready():
   await tree.sync()  #スラッシュコマンドを同期
   myLoop.start()
   myLoop2.start()
-  myLoop3.start()
 
 
 @tasks.loop(seconds=60)  # repeat after every 10 seconds
