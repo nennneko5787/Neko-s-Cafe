@@ -10,8 +10,6 @@ import aiohttp
 import asyncio
 import io
 
-github = os.environ['github']
-
 # 接続に必要なオブジェクトを生成
 intents = discord.Intents.all()  # デフォルトのIntentsオブジェクトを生成
 client = discord.Client(intents=intents)
