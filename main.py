@@ -109,6 +109,12 @@ async def jannkenn(interaction: discord.Interaction, text: str):
 
 
 @client.event
+async def on_message(message):
+  if message.author.id == 562987075326967809:
+      if message.channel.id != 1124309484764930151:
+          await message.delete()
+
+@client.event
 async def on_ready():
   print('Ready!')
   await tree.sync()  #スラッシュコマンドを同期
