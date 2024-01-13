@@ -113,6 +113,10 @@ async def on_message(message):
   if message.author.id == 562987075326967809:
       if message.channel.id != 1124309484764930151:
           await message.delete()
+          
+  if message.author.id == 1005468573545799753:
+      if message.channel.id != 1127002054557192304:
+          await message.delete()
 
 @client.event
 async def on_ready():
