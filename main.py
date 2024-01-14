@@ -1,4 +1,4 @@
-(import os
+import os
 import discord
 from discord.ext import tasks
 from server import keep_alive
