@@ -1,4 +1,4 @@
-import os
+(import os
 import discord
 from discord.ext import tasks
 from server import keep_alive
@@ -111,12 +111,16 @@ async def jannkenn(interaction: discord.Interaction, text: str):
 @client.event
 async def on_message(message):
   if message.author.id == 562987075326967809:
-      if message.channel.id != 1124309484764930151:
-          await message.delete()
+    if message.channel.id != 1124309484764930151:
+        await message.delete()
           
   if message.author.id == 1005468573545799753:
-      if message.channel.id != 1127002054557192304:
-          await message.delete()
+    if message.channel.id != 1127002054557192304:
+        await message.delete()
+          
+  if message.type == discord.MessageType.premium_guild_subscription:
+      channel = client.get_channel(1195688699598491708)
+      embed = discord.Embed(title="ブーストされました！",description=f"{message.author.mention} さんありがとうございます！"
 
 @client.event
 async def on_ready():
