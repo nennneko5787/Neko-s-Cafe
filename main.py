@@ -120,7 +120,7 @@ async def on_message(message):
           
   if message.type == discord.MessageType.premium_guild_subscription:
       channel = client.get_channel(1195688699598491708)
-      embed = discord.Embed(title="ブーストされました！",description=f"{message.author.mention} さんありがとうございます！"
+      embed = discord.Embed(title="ブーストされました！",description=f"{message.author.mention} さんありがとうございます！")
 
 @client.event
 async def on_ready():
