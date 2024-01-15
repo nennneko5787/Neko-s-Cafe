@@ -133,8 +133,9 @@ async def on_message(message):
                     temperature=0
                 )
 
-# 応答の表示
-text = response['choices'][0]['message']['content']
+    # 応答の表示
+    text = response['choices'][0]['message']['content']
+    await message.reply(text)
           
   if message.type == discord.MessageType.premium_guild_subscription:
       channel = client.get_channel(1195688699598491708)
