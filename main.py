@@ -136,7 +136,7 @@ async def on_message(message):
                 )
 
     # 応答の表示
-    text = response['choices'][0]['message']['content']
+    text = response.choices[0].message.content
     await message.reply(text)
           
   if message.type == discord.MessageType.premium_guild_subscription:
