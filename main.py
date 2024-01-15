@@ -9,12 +9,15 @@ import re
 import aiohttp
 import asyncio
 import io
+import openai
 
 # 接続に必要なオブジェクトを生成
 intents = discord.Intents.all()  # デフォルトのIntentsオブジェクトを生成
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
+# APIキーの設定
+openai.api_key = os.getenv("openai")
 
 class SampleView(discord.ui.View):  # UIキットを利用するためにdiscord.ui.Viewを継承する
 
@@ -117,6 +120,21 @@ async def on_message(message):
   if message.author.id == 1005468573545799753:
     if message.channel.id != 1127002054557192304:
         await message.delete()
+        
+  if message.channel.id == 1196466816894107668:
+    # GPTによる応答生成
+    prompt = f"「{message.content}」に対する返答をメイド風に返してください。"
+    response = openai.ChatCompletion.create(
+                      model = "gpt-3.5-turbo-16k-0613",
+                      messages = [
+                      {"role": "system", "content": "You are a helpful assistant."},
+                      {"role": "user", "content": prompt}
+                    ],
+                    temperature=0
+                )
+
+# 応答の表示
+text = response['choices'][0]['message']['content']
           
   if message.type == discord.MessageType.premium_guild_subscription:
       channel = client.get_channel(1195688699598491708)
