@@ -9,7 +9,7 @@ import re
 import aiohttp
 import asyncio
 import io
-import openai
+from openai import AsyncOpenAI
 
 # 接続に必要なオブジェクトを生成
 intents = discord.Intents.all()  # デフォルトのIntentsオブジェクトを生成
