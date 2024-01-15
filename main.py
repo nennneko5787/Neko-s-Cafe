@@ -16,7 +16,7 @@ intents = discord.Intents.all()  # デフォルトのIntentsオブジェクト�
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-chatgpt = OpenAI(
+chatgpt = AsyncOpenAI(
     # This is the default and can be omitted
     api_key=os.environ.get("openai"),
 )
