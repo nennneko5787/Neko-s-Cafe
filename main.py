@@ -16,8 +16,10 @@ intents = discord.Intents.all()  # デフォルトのIntentsオブジェクト�
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-# APIキーの設定
-openai.api_key = os.getenv("openai")
+client = OpenAI(
+    # This is the default and can be omitted
+    api_key=os.environ.get("openai"),
+)
 
 class SampleView(discord.ui.View):  # UIキットを利用するためにdiscord.ui.Viewを継承する
 
