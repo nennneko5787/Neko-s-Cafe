@@ -16,7 +16,7 @@ intents = discord.Intents.all()  # デフォルトのIntentsオブジェクト�
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-client = OpenAI(
+chatgpt = OpenAI(
     # This is the default and can be omitted
     api_key=os.environ.get("openai"),
 )
@@ -126,7 +126,7 @@ async def on_message(message):
   if message.channel.id == 1196466816894107668:
     # GPTによる応答生成
     prompt = f"「{message.content}」に対する返答をメイド風に返してください。"
-    response = await openai.ChatCompletion.acreate(
+    response = await chatgpt.chat.completions.create(
                       model = "gpt-3.5-turbo-16k-0613",
                       messages = [
                       {"role": "system", "content": "You are a helpful assistant."},
