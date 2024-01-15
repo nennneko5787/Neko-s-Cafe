@@ -179,7 +179,7 @@ async def myLoop():
 async def myLoop2():
   # work
   await client.change_presence(activity=discord.Game(
-    name="☕猫の喫茶店でメイドとして勤務中 / https://discord.gg/aEEt8FgYBb"))
+    name="☕猫の喫茶店でメイドとして勤務中"))
 
 
 TOKEN = os.getenv("discord")
