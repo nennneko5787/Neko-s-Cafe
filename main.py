@@ -124,7 +124,7 @@ async def on_message(message):
   if message.channel.id == 1196466816894107668:
     # GPTによる応答生成
     prompt = f"「{message.content}」に対する返答をメイド風に返してください。"
-    response = openai.ChatCompletion.create(
+    response = await openai.ChatCompletion.acreate(
                       model = "gpt-3.5-turbo-16k-0613",
                       messages = [
                       {"role": "system", "content": "You are a helpful assistant."},
