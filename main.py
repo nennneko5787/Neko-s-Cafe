@@ -161,7 +161,7 @@ async def on_raw_reaction_add(payload):
 		unixtime = int(report_dt.timestamp())
 
 		report_channel = client.get_channel(1200806172526133268)
-		embed = discord.Embed(title="メッセージが通報されました",description="",color=discord.color.red())
+		embed = discord.Embed(title="メッセージが通報されました",description="",color=discord.Colour.red())
 		embed.add_field(name="通報した人",value=f"{member.mention}(``{member.name}``, ``{member.id}``)")
 		embed.add_field(name="対象のメッセージ",value=f"{message.jump_url}(``{channel.id}``, ``{message.id}``)")
 		embed.add_field(name="メッセージを送信した人",value=f"{message.author.mention}(``{message.author.name}``, ``{message.author.id}``)")
