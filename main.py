@@ -128,8 +128,7 @@ async def on_message(message):
 			loop = asyncio.get_event_loop()
 
 			# Gemini APIを使って応答を生成 (非同期で実行)
-			response = loop.run_in_executor(None, model.generate_content, prompt)
-			# response = await loop.run_in_executor(None, future.result)
+			response = await loop.run_in_executor(None, model.generate_content, prompt)
 
 			# 応答をテキストとして取得
 			text = response.text
@@ -160,12 +159,12 @@ async def myLoop():
 	await channel.edit(name="Member Count: {}".format(member_count))
 
 	channel = guild.get_channel(1197896876956074025)
-	member_count = len([guild.member_count for m in guild.members if m.bot])	# Include bots
+	member_count = len([guild.member_count for m in guild.members if m.bot])	# doesn't include members
 	await channel.edit(name="Bot Count: {}".format(member_count))
 
 	channel = guild.get_channel(1197896879007080558)
-	member_count = len([guild.member_count for m in guild.members])	# Include bots
-	await channel.edit(name="Online Member Count: {}".format(member_count))
+	member_count = len([guild.member_count for m in guild.members])	# all users
+	await channel.edit(name="User Count: {}".format(member_count))
 	print('It works!')
 
 
