@@ -41,7 +41,9 @@ safety_config = [
 
 # Geminiモデルの設定
 model = genai.GenerativeModel(model_name='gemini-pro',safety_settings=safety_config)
-# チャットを開始(履歴が残る)
+# チャットを開始(履歴が残る、卑猥なことは聞けない)
+nohiwaichat = model.start_chat(history=[])
+# チャットを開始(履歴が残る、r18ok)
 chat = model.start_chat(history=[])
 # グローバルプロンプト
 global_prompt = "ただし、返答の中に鉤括弧(「」)は付けないでください。あと、私の名前は、「{message.author.display_name}」で、あなたの名前は「メイドさん」で、あなたの身長は160cm、あなたの体重は65kgで、すこしぽっちゃりしています。あなたは食べることが大好きです。好きな食べ物はピザやハンバーガーなどの脂っこい食べ物です。あなたのバストサイズはDカップです。あなたのチャームポイントはぷにぷにとしたお腹と、大きく育ったDカップのおっぱい、それに大きく育ったお尻です。なお、聞かれていない場合はあなたの情報を言わないでください。"
@@ -152,13 +154,13 @@ async def on_message(message):
 			async with message.channel.typing():
 				# プロンプト
 				pr = global_prompt.replace("{message.author.display_name}",message.author.display_name)
-				prompt = f"私が「{message.content}」と聞いたのに対する返答をメイド風に返してください。性的に露骨なことは断ってください。{pr}"
+				prompt = f"私が「{message.content}」と聞いたのに対する返答をメイド風に返してください。性的に露骨なことを聞かれた場合は断ってください。性的に露骨なことは話さないでください。{pr}"
 
 				# イベントループを取得
 				loop = asyncio.get_event_loop()
 
 				# Gemini APIを使って応答を生成 (非同期で実行)
-				partial_func = functools.partial(chat.send_message, prompt)
+				partial_func = functools.partial(nohiwaichat.send_message, prompt)
 				response = await loop.run_in_executor(None, partial_func)
 
 				try:
