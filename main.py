@@ -120,7 +120,7 @@ async def on_message(message):
 				await message.delete()
 				
 	if message.channel.id == 1196466816894107668:
-		if message.author.bot != False:
+		if message.author.bot == False:
 			# タイピングしてみる
 			async with message.channel.typing():
 				# プロンプト
