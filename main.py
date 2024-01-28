@@ -180,6 +180,7 @@ async def on_raw_reaction_add(payload):
 		channel = guild.get_channel(payload.channel_id)
 		message = await channel.fetch_message(payload.message_id)
 		member = payload.member
+		await message.remove_reaction(payload.emoji, member)
 
 		report_dt = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
 		report_date = report_dt.strftime('%Y/%m/%d %H:%M:%S')
