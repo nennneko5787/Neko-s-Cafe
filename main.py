@@ -199,29 +199,30 @@ async def on_message(message):
 
 @client.event
 async def on_raw_reaction_add(payload):
-	if payload.emoji.id == 1200807823718744095:
-		guild = client.get_guild(1124309483703763025)
-		channel = guild.get_channel(payload.channel_id)
-		message = await channel.fetch_message(payload.message_id)
-		member = payload.member
-		await message.remove_reaction(payload.emoji, member)
+	if payload.event_type == "REACTION_ADD":
+		if payload.emoji.id == 1200807823718744095:
+			guild = client.get_guild(1124309483703763025)
+			channel = guild.get_channel(payload.channel_id)
+			message = await channel.fetch_message(payload.message_id)
+			member = payload.member
+			await message.remove_reaction(payload.emoji, member)
 
-		report_dt = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
-		report_date = report_dt.strftime('%Y/%m/%d %H:%M:%S')
-		unixtime = int(report_dt.timestamp())
+			report_dt = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
+			report_date = report_dt.strftime('%Y/%m/%d %H:%M:%S')
+			unixtime = int(report_dt.timestamp())
 
-		report_channel = client.get_channel(1200806172526133268)
-		embed = discord.Embed(title="メッセージが通報されました",description="",color=discord.Colour.red())
-		embed.add_field(name="通報した人",value=f"{member.mention}(``{member.name}``, ``{member.id}``)")
-		embed.add_field(name="対象のメッセージ",value=f"{message.jump_url}(``{channel.id}``, ``{message.id}``)")
-		embed.add_field(name="メッセージを送信した人",value=f"{message.author.mention}(``{message.author.name}``, ``{message.author.id}``)")
-		embed.add_field(name="メッセージの内容",value=f"{message.content}")
-		embed.add_field(name="メッセージの添付ファイル",value=f"{message.attachments}")
-		embed.add_field(name="通報した日時",value=f"<t:{unixtime}:D>(`{report_date}`)")
-		await report_channel.send(embed=embed)
+			report_channel = client.get_channel(1200806172526133268)
+			embed = discord.Embed(title="メッセージが通報されました",description="",color=discord.Colour.red())
+			embed.add_field(name="通報した人",value=f"{member.mention}(``{member.name}``, ``{member.id}``)")
+			embed.add_field(name="対象のメッセージ",value=f"{message.jump_url}(``{channel.id}``, ``{message.id}``)")
+			embed.add_field(name="メッセージを送信した人",value=f"{message.author.mention}(``{message.author.name}``, ``{message.author.id}``)")
+			embed.add_field(name="メッセージの内容",value=f"{message.content}")
+			embed.add_field(name="メッセージの添付ファイル",value=f"{message.attachments}")
+			embed.add_field(name="通報した日時",value=f"<t:{unixtime}:D>(`{report_date}`)")
+			await report_channel.send(embed=embed)
 
-		await member.create_dm()
-		await member.dm_channel.send(embed=embed)
+			await member.create_dm()
+			await member.dm_channel.send(embed=embed)
 
 @client.event
 async def on_ready():
