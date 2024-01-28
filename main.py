@@ -7,6 +7,7 @@ import random
 import asyncio
 import concurrent.futures
 import google.generativeai as genai
+from google.generativeai import generative_models
 import functools
 import datetime
 
@@ -131,7 +132,13 @@ async def on_message(message):
 				loop = asyncio.get_event_loop()
 
 				# Gemini APIを使って応答を生成 (非同期で実行)
-				partial_func = functools.partial(model.generate_content, prompt, safety_settings={"HARASSMENT": "block_none", "SEXUALLY_EXPLICIT": "block_none", "HATE_SPEECH": "block_none", "DANGEROUS_CONTENT": "block_none"})
+				safety_config = {
+					generative_models.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: generative_models.HarmBlockThreshold.BLOCK_NONE,
+					generative_models.HarmCategory.HARM_CATEGORY_HARASSMENT: generative_models.HarmBlockThreshold.BLOCK_NONE,
+					generative_models.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: generative_models.HarmBlockThreshold.BLOCK_NONE,
+					generative_models.HarmCategory.HARM_CATEGORY_HATE_SPEECH: generative_models.HarmBlockThreshold.BLOCK_NONE,
+				}
+				partial_func = functools.partial(model.generate_content, prompt, safety_settings=safety_config)
 				response = await loop.run_in_executor(None, partial_func)
 
 				try:
