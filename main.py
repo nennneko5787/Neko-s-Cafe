@@ -151,7 +151,7 @@ async def on_message(message):
 			# タイピングしてみる
 			async with message.channel.typing():
 				# プロンプト
-				prompt = f"「{message.content}」に対する返答をメイド風に返してください。性的に露骨なことは断ってください。{global_prompt}"
+				prompt = f"「{message.content}」に対する返答をメイド風に返してください。性的に露骨なことは断ってください。{global_prompt.replace("{message.author.display_name}",message.author.display_name)}"
 
 				# イベントループを取得
 				loop = asyncio.get_event_loop()
@@ -174,7 +174,7 @@ async def on_message(message):
 			# タイピングしてみる
 			async with message.channel.typing():
 				# プロンプト
-				prompt = f"「{message.content}」に対する返答をメイド風に返してください。{global_prompt}"
+				prompt = f"「{message.content}」に対する返答をメイド風に返してください。{global_prompt.replace("{message.author.display_name}",message.author.display_name)}"
 
 				# イベントループを取得
 				loop = asyncio.get_event_loop()
