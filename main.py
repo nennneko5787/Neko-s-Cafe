@@ -138,6 +138,7 @@ async def jannkenn(interaction: discord.Interaction, text: str):
 async def on_message(message):
 	if message.author.id == 562987075326967809:
 		if message.channel.id != 1124309484764930151:
+			if message.channel.id != 1124491367389859970:
 				await message.delete()
 					
 	if message.author.id == 1005468573545799753:
