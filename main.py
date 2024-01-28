@@ -6,7 +6,6 @@ from discord import app_commands
 import random
 import asyncio
 import concurrent.futures
-from functools import partial
 import google.generativeai as genai
 
 # 接続に必要なオブジェクトを生成
@@ -128,12 +127,9 @@ async def on_message(message):
 			# イベントループを取得
 			loop = asyncio.get_event_loop()
 
-			# 部分適用を使って引数を指定
-			partial_sync_function = partial(model.generate_content, prompt)
-
 			# Gemini APIを使って応答を生成 (非同期で実行)
-			future = loop.run_in_executor(None, partial_sync_function)
-			response = await loop.run_in_executor(None, future.result)
+			response = loop.run_in_executor(None, model.generate_content, prompt)
+			# response = await loop.run_in_executor(None, future.result)
 
 			# 応答をテキストとして取得
 			text = response.text
