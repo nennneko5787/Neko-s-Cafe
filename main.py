@@ -3,12 +3,10 @@ import discord
 from discord.ext import tasks
 from server import keep_alive
 from discord import app_commands
-import asyncio
 import random
-import re
-import aiohttp
 import asyncio
-import io
+import concurrent.futures
+from functools import partial
 import google.generativeai as genai
 
 # 接続に必要なオブジェクトを生成
@@ -122,13 +120,25 @@ async def on_message(message):
 				await message.delete()
 				
 	if message.channel.id == 1196466816894107668:
-		prompt = f"「{message.content}」に対する返答をメイド風に返してください。"
-		# Gemini APIを使って応答を生成
-		response = model.generate_content(prompt)
+		# タイピングしてみる
+		async with message.channel.typing():
+			# プロンプト
+			prompt = f"「{message.content}」に対する返答をメイド風に返してください。"
 
-		# 応答をテキストとして取得
-		text = response.text
+			# イベントループを取得
+			loop = asyncio.get_event_loop()
 
+			# 部分適用を使って引数を指定
+			partial_sync_function = partial(model.generate_content, prompt)
+
+			# Gemini APIを使って応答を生成 (非同期で実行)
+			future = loop.run_in_executor(None, partial_sync_function)
+			response = await loop.run_in_executor(None, future.result)
+
+			# 応答をテキストとして取得
+			text = response.text
+
+		# 最後にユーザーに返す
 		await message.reply(text)
 					
 	if message.type == discord.MessageType.premium_guild_subscription:
