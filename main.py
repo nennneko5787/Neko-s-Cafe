@@ -7,6 +7,7 @@ import random
 import asyncio
 import concurrent.futures
 import google.generativeai as genai
+import datetime
 
 # 接続に必要なオブジェクトを生成
 intents = discord.Intents.all()	# デフォルトのIntentsオブジェクトを生成
@@ -119,27 +120,53 @@ async def on_message(message):
 				await message.delete()
 				
 	if message.channel.id == 1196466816894107668:
-		# タイピングしてみる
-		async with message.channel.typing():
-			# プロンプト
-			prompt = f"「{message.content}」に対する返答をメイド風に返してください。"
+		if message.author.bot != False:
+			# タイピングしてみる
+			async with message.channel.typing():
+				# プロンプト
+				prompt = f"「{message.content}」に対する返答をメイド風に返してください。ただし、返答の中に鉤括弧(「」)は付けないでください。"
 
-			# イベントループを取得
-			loop = asyncio.get_event_loop()
+				# イベントループを取得
+				loop = asyncio.get_event_loop()
 
-			# Gemini APIを使って応答を生成 (非同期で実行)
-			response = await loop.run_in_executor(None, model.generate_content, prompt)
+				# Gemini APIを使って応答を生成 (非同期で実行)
+				response = await loop.run_in_executor(None, model.generate_content, prompt)
 
-			# 応答をテキストとして取得
-			text = response.text
+				# 応答をテキストとして取得
+				text = response.text
 
-		# 最後にユーザーに返す
-		await message.reply(text)
+			# 最後にユーザーに返す
+			await message.reply(text)
 					
 	if message.type == discord.MessageType.premium_guild_subscription:
 		channel = client.get_channel(1195688699598491708)
 		embed = discord.Embed(title="ブーストされました！",description=f"{message.author.mention} さんありがとうございます！")
 		await channel.send(embed=embed)
+
+@client.event
+async def on_raw_reaction_add(payload):
+	if payload.emoji.id == 1200807823718744095:
+		guild = client.get_guild(1124309483703763025)
+		channel = guild.get_channel(payload.channel_id)
+		message = await channel.fetch_message(payload.message_id)
+		member = payload.member
+
+		report_dt = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
+		report_date = report_dt.strftime('%Y/%m/%d %H:%M:%S')
+		unixtime = int(report_dt.timestamp())
+
+		report_channel = client.get_channel(1200806172526133268)
+		embed = discord.Embed(title="メッセージが通報されました",description="",color=discord.color.red())
+		embed.add_field(name="通報した人",value=f"{member.mention}(``{member.name}``, ``{member.id}``)")
+		embed.add_field(name="対象のメッセージ",value=f"{message.jump_url}(``{channel.id}``, ``{message.id}``)")
+		embed.add_field(name="メッセージを送信した人",value=f"{message.author.mention}(``{message.author.name}``, ``{message.author.id}``)")
+		embed.add_field(name="メッセージの内容",value=f"{message.content}")
+		embed.add_field(name="メッセージの添付ファイル",value=f"{message.attachments}")
+		embed.add_field(name="通報した日時",value=f"<t:{unixtime}:D>(`{report_date}`)")
+		await report_channel.send(embed=embed)
+
+		await member.create_dm()
+		await member.dm_channel.send(embed=embed)
 
 @client.event
 async def on_ready():
