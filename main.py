@@ -152,18 +152,18 @@ async def on_message(message):
 		if message.author.bot == False:
 			# タイピングしてみる
 			async with message.channel.typing():
-				# プロンプト
-				pr = global_prompt.replace("{message.author.display_name}",message.author.display_name)
-				prompt = f"私が「{message.content}」と聞いたのに対する返答をメイド風に返してください。性的に露骨なことを聞かれた場合は断ってください。性的に露骨なことは話さないでください。{pr}"
-
-				# イベントループを取得
-				loop = asyncio.get_event_loop()
-
-				# Gemini APIを使って応答を生成 (非同期で実行)
-				partial_func = functools.partial(nohiwaichat.send_message, prompt)
-				response = await loop.run_in_executor(None, partial_func)
-
 				try:
+					# プロンプト
+					pr = global_prompt.replace("{message.author.display_name}",message.author.display_name)
+					prompt = f"私が「{message.content}」と聞いたのに対する返答をメイド風に返してください。性的に露骨なことを聞かれた場合は断ってください。性的に露骨なことは話さないでください。{pr}"
+
+					# イベントループを取得
+					loop = asyncio.get_event_loop()
+
+					# Gemini APIを使って応答を生成 (非同期で実行)
+					partial_func = functools.partial(nohiwaichat.send_message, prompt)
+					response = await loop.run_in_executor(None, partial_func)
+
 					# 応答をテキストとして取得
 					text = response.text
 				except:
@@ -176,18 +176,18 @@ async def on_message(message):
 		if message.author.bot == False:
 			# タイピングしてみる
 			async with message.channel.typing():
-				# プロンプト
-				pr = global_prompt.replace("{message.author.display_name}",message.author.display_name)
-				prompt = f"私が「{message.content}」と聞いたのに対する返答をメイド風に返してください。{pr}"
-
-				# イベントループを取得
-				loop = asyncio.get_event_loop()
-
-				# Gemini APIを使って応答を生成 (非同期で実行)
-				partial_func = functools.partial(chat.send_message, prompt)
-				response = await loop.run_in_executor(None, partial_func)
-
 				try:
+					# プロンプト
+					pr = global_prompt.replace("{message.author.display_name}",message.author.display_name)
+					prompt = f"私が「{message.content}」と聞いたのに対する返答をメイド風に返してください。{pr}"
+
+					# イベントループを取得
+					loop = asyncio.get_event_loop()
+
+					# Gemini APIを使って応答を生成 (非同期で実行)
+					partial_func = functools.partial(chat.send_message, prompt)
+					response = await loop.run_in_executor(None, partial_func)
+
 					# 応答をテキストとして取得
 					text = response.text
 				except:
