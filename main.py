@@ -9,182 +9,170 @@ import re
 import aiohttp
 import asyncio
 import io
-from openai import AsyncOpenAI
+import google.generativeai as genai
 
 # 接続に必要なオブジェクトを生成
-intents = discord.Intents.all()  # デフォルトのIntentsオブジェクトを生成
+intents = discord.Intents.all()	# デフォルトのIntentsオブジェクトを生成
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-chatgpt = AsyncOpenAI(
-    # This is the default and can be omitted
-    api_key=os.environ.get("openai"),
-)
+# Google Generative AI（Gemini API）のAPIキー設定
+genai.configure(api_key=os.environ.get("gemini"))
 
-class SampleView(discord.ui.View):  # UIキットを利用するためにdiscord.ui.Viewを継承する
+# Geminiモデルの設定
+model = genai.GenerativeModel('gemini-pro')
 
-  def __init__(self, timeout=180):  # Viewにはtimeoutがあり、初期値は180(s)である
-    super().__init__(timeout=timeout)
+class SampleView(discord.ui.View):	# UIキットを利用するためにdiscord.ui.Viewを継承する
 
-    @discord.ui.button(label="グー", style=discord.ButtonStyle.success)
-    async def guu(self, button: discord.ui.Button,
-                  interaction: discord.Interaction):
-      jite = random.randint(0, 2)
-      view = SampleView(timeout=None)
-      if jite == 0:
-        await interaction.response.send_message(
-          "じゃんけんぽん！\n私は、グーを出しました！\nあいこです！", view=view)
-      elif jite == 1:
-        await interaction.response.send_message(
-          "じゃんけんぽん！\n私は、チョキを出しました！\nあなたの勝ちです！", view=view)
-      elif jite == 2:
-        await interaction.response.send_message(
-          "じゃんけんぽん！\n私は、パーを出しました！\nあなたの負けです！", view=view)
+	def __init__(self, timeout=180):	# Viewにはtimeoutがあり、初期値は180(s)である
+		super().__init__(timeout=timeout)
 
-    @discord.ui.button(label="チョキ", style=discord.ButtonStyle.success)
-    async def tyoki(self, button: discord.ui.Button,
-                    interaction: discord.Interaction):
-      jite = random.randint(0, 2)
-      view = SampleView(timeout=None)
-      if jite == 0:
-        await interaction.response.send_message(
-          "じゃんけんぽん！\n私は、グーを出しました！\nあなたの負けです！", view=view)
-      elif jite == 1:
-        await interaction.response.send_message(
-          "じゃんけんぽん！\n私は、チョキを出しました！\nあいこです！", view=view)
-      elif jite == 2:
-        await interaction.response.send_message(
-          "じゃんけんぽん！\n私は、パーを出しました！\nあなたの勝ちです！", view=view)
+		@discord.ui.button(label="グー", style=discord.ButtonStyle.success)
+		async def guu(self, button: discord.ui.Button,
+									interaction: discord.Interaction):
+			jite = random.randint(0, 2)
+			view = SampleView(timeout=None)
+			if jite == 0:
+				await interaction.response.send_message(
+					"じゃんけんぽん！\n私は、グーを出しました！\nあいこです！", view=view)
+			elif jite == 1:
+				await interaction.response.send_message(
+					"じゃんけんぽん！\n私は、チョキを出しました！\nあなたの勝ちです！", view=view)
+			elif jite == 2:
+				await interaction.response.send_message(
+					"じゃんけんぽん！\n私は、パーを出しました！\nあなたの負けです！", view=view)
 
-    @discord.ui.button(label="パー", style=discord.ButtonStyle.success)
-    async def paa(self, button: discord.ui.Button,
-                  interaction: discord.Interaction):
-      jite = random.randint(0, 2)
-      view = SampleView(timeout=None)
-      if jite == 0:
-        await interaction.response.send_message(
-          "じゃんけんぽん！\n私は、グーを出しました！\nあなたの勝ちです！", view=view)
-      elif jite == 1:
-        await interaction.response.send_message(
-          "じゃんけんぽん！\n私は、チョキを出しました！\nあなたの負けです！", view=view)
-      elif jite == 2:
-        await interaction.response.send_message(
-          "じゃんけんぽん！\n私は、パーを出しました！\nあいこです！", view=view)
+		@discord.ui.button(label="チョキ", style=discord.ButtonStyle.success)
+		async def tyoki(self, button: discord.ui.Button,
+										interaction: discord.Interaction):
+			jite = random.randint(0, 2)
+			view = SampleView(timeout=None)
+			if jite == 0:
+				await interaction.response.send_message(
+					"じゃんけんぽん！\n私は、グーを出しました！\nあなたの負けです！", view=view)
+			elif jite == 1:
+				await interaction.response.send_message(
+					"じゃんけんぽん！\n私は、チョキを出しました！\nあいこです！", view=view)
+			elif jite == 2:
+				await interaction.response.send_message(
+					"じゃんけんぽん！\n私は、パーを出しました！\nあなたの勝ちです！", view=view)
+
+		@discord.ui.button(label="パー", style=discord.ButtonStyle.success)
+		async def paa(self, button: discord.ui.Button,
+									interaction: discord.Interaction):
+			jite = random.randint(0, 2)
+			view = SampleView(timeout=None)
+			if jite == 0:
+				await interaction.response.send_message(
+					"じゃんけんぽん！\n私は、グーを出しました！\nあなたの勝ちです！", view=view)
+			elif jite == 1:
+				await interaction.response.send_message(
+					"じゃんけんぽん！\n私は、チョキを出しました！\nあなたの負けです！", view=view)
+			elif jite == 2:
+				await interaction.response.send_message(
+					"じゃんけんぽん！\n私は、パーを出しました！\nあいこです！", view=view)
 
 
 @tree.command(name="ott", description="rock paper scissors one two three")
 @discord.app_commands.choices(text=[
-  discord.app_commands.Choice(name="グー", value="0"),
-  discord.app_commands.Choice(name="チョキ", value="1"),
-  discord.app_commands.Choice(name="パー", value="2")
+	discord.app_commands.Choice(name="グー", value="0"),
+	discord.app_commands.Choice(name="チョキ", value="1"),
+	discord.app_commands.Choice(name="パー", value="2")
 ])
 async def jannkenn(interaction: discord.Interaction, text: str):
-  te = int(text)
-  jite = random.randint(0, 2)
-  view = SampleView(timeout=None)
-  if (te == 0) and (jite == 0):
-    await interaction.response.send_message("じゃんけんぽん！\n私は、グーを出しました！\nあいこです！",
-                                            view=view)
-  elif (te == 0) and (jite == 1):
-    await interaction.response.send_message(
-      "じゃんけんぽん！\n私は、チョキを出しました！\nあなたの勝ちです！", view=view)
-  elif (te == 0) and (jite == 2):
-    await interaction.response.send_message(
-      "じゃんけんぽん！\n私は、パーを出しました！\nあなたの負けです！", view=view)
-  elif (te == 1) and (jite == 0):
-    await interaction.response.send_message(
-      "じゃんけんぽん！\n私は、グーを出しました！\nあなたの負けです！", view=view)
-  elif (te == 1) and (jite == 1):
-    await interaction.response.send_message("じゃんけんぽん！\n私は、チョキを出しました！\nあいこです！",
-                                            view=view)
-  elif (te == 1) and (jite == 2):
-    await interaction.response.send_message(
-      "じゃんけんぽん！\n私は、パーを出しました！\nあなたの勝ちです！", view=view)
-  elif (te == 2) and (jite == 0):
-    await interaction.response.send_message(
-      "じゃんけんぽん！\n私は、グーを出しました！\nあなたの勝ちです！", view=view)
-  elif (te == 2) and (jite == 1):
-    await interaction.response.send_message(
-      "じゃんけんぽん！\n私は、チョキを出しました！\nあなたの負けです！", view=view)
-  elif (te == 2) and (jite == 2):
-    await interaction.response.send_message("じゃんけんぽん！\n私は、パーを出しました！\nあいこです！",
-                                            view=view)
-  else:
-    await interaction.response.send_message("何かがおかしいぞ！ｗ", view=view)
+	te = int(text)
+	jite = random.randint(0, 2)
+	view = SampleView(timeout=None)
+	if (te == 0) and (jite == 0):
+		await interaction.response.send_message("じゃんけんぽん！\n私は、グーを出しました！\nあいこです！",view=view)
+	elif (te == 0) and (jite == 1):
+		await interaction.response.send_message(
+			"じゃんけんぽん！\n私は、チョキを出しました！\nあなたの勝ちです！", view=view)
+	elif (te == 0) and (jite == 2):
+		await interaction.response.send_message(
+			"じゃんけんぽん！\n私は、パーを出しました！\nあなたの負けです！", view=view)
+	elif (te == 1) and (jite == 0):
+		await interaction.response.send_message(
+			"じゃんけんぽん！\n私は、グーを出しました！\nあなたの負けです！", view=view)
+	elif (te == 1) and (jite == 1):
+		await interaction.response.send_message("じゃんけんぽん！\n私は、チョキを出しました！\nあいこです！",view=view)
+	elif (te == 1) and (jite == 2):
+		await interaction.response.send_message(
+			"じゃんけんぽん！\n私は、パーを出しました！\nあなたの勝ちです！", view=view)
+	elif (te == 2) and (jite == 0):
+		await interaction.response.send_message(
+			"じゃんけんぽん！\n私は、グーを出しました！\nあなたの勝ちです！", view=view)
+	elif (te == 2) and (jite == 1):
+		await interaction.response.send_message(
+			"じゃんけんぽん！\n私は、チョキを出しました！\nあなたの負けです！", view=view)
+	elif (te == 2) and (jite == 2):
+		await interaction.response.send_message("じゃんけんぽん！\n私は、パーを出しました！\nあいこです！",view=view)
+	else:
+		await interaction.response.send_message("何かがおかしいぞ！ｗ", view=view)
 
 
 @client.event
 async def on_message(message):
-  if message.author.id == 562987075326967809:
-    if message.channel.id != 1124309484764930151:
-        await message.delete()
-          
-  if message.author.id == 1005468573545799753:
-    if message.channel.id != 1127002054557192304:
-        await message.delete()
-        
-  if message.channel.id == 1196466816894107668:
-    # GPTによる応答生成
-    prompt = f"「{message.content}」に対する返答をメイド風に返してください。"
-    response = await chatgpt.chat.completions.create(
-                      model = "gpt-3.5-turbo-16k-0613",
-                      messages = [
-                      {"role": "system", "content": "You are a helpful assistant."},
-                      {"role": "user", "content": prompt}
-                    ],
-                    temperature=0
-                )
+	if message.author.id == 562987075326967809:
+		if message.channel.id != 1124309484764930151:
+				await message.delete()
+					
+	if message.author.id == 1005468573545799753:
+		if message.channel.id != 1127002054557192304:
+				await message.delete()
+				
+	if message.channel.id == 1196466816894107668:
+		prompt = f"「{message.content}」に対する返答をメイド風に返してください。"
+		# Gemini APIを使って応答を生成
+		response = model.generate_content(prompt)
 
-    # 応答の表示
-    text = response.choices[0].message.content
-    await message.reply(text)
-          
-  if message.type == discord.MessageType.premium_guild_subscription:
-      channel = client.get_channel(1195688699598491708)
-      embed = discord.Embed(title="ブーストされました！",description=f"{message.author.mention} さんありがとうございます！")
+		# 応答をテキストとして取得
+		text = response.text
+
+		await message.reply(text)
+					
+	if message.type == discord.MessageType.premium_guild_subscription:
+		channel = client.get_channel(1195688699598491708)
+		embed = discord.Embed(title="ブーストされました！",description=f"{message.author.mention} さんありがとうございます！")
+		await channel.send(embed=embed)
 
 @client.event
 async def on_ready():
-  print('Ready!')
-  await tree.sync()  #スラッシュコマンドを同期
-  myLoop.start()
-  myLoop2.start()
+	print('Ready!')
+	await tree.sync()	#スラッシュコマンドを同期
+	myLoop.start()
+	myLoop2.start()
 
 
-@tasks.loop(seconds=60)  # repeat after every 10 seconds
+@tasks.loop(seconds=60*20)	# repeat after every 20 minutes
 async def myLoop():
-  # work
-  guild = client.get_guild(1124309483703763025)
-  channel = guild.get_channel(1126754189331148841)
-  member_count = len([guild.member_count for m in guild.members
-                      if not m.bot])  # doesn't include bots
-  print("Member Count: {}".format(member_count))
-  await channel.edit(name="Member Count: {}".format(member_count))
+	# work
+	guild = client.get_guild(1124309483703763025)
+	channel = guild.get_channel(1197896874376572981)
+	member_count = len([guild.member_count for m in guild.members if not m.bot])	# doesn't include bots
+	print("Member Count: {}".format(member_count))
+	await channel.edit(name="Member Count: {}".format(member_count))
 
-  channel = guild.get_channel(1126754191986151444)
-  member_count = len([guild.member_count for m in guild.members
-                      if m.bot])  # Include bots
-  await channel.edit(name="Bot Count: {}".format(member_count))
+	channel = guild.get_channel(1197896876956074025)
+	member_count = len([guild.member_count for m in guild.members if m.bot])	# Include bots
+	await channel.edit(name="Bot Count: {}".format(member_count))
 
-  channel = guild.get_channel(1142373728525746207)
-  count = 0  #put these at the beginning of your command so it will reset every time, otherwise, your starting number would be the sum of all earlier commands
-  for member in guild.members:  #you forgot to get members
-    if member.status != discord.Status.offline:
-      count += 1  #you can't use "= +1" - "+= 1" is correct
-  await channel.edit(name="Online Member Count: {}".format(count))
-  print('It works!')
+	channel = guild.get_channel(1197896879007080558)
+	member_count = len([guild.member_count for m in guild.members])	# Include bots
+	await channel.edit(name="Online Member Count: {}".format(member_count))
+	print('It works!')
 
 
-@tasks.loop(seconds=20)  # repeat after every 10 seconds
+@tasks.loop(seconds=20)	# repeat after every 10 seconds
 async def myLoop2():
-  # work
-  await client.change_presence(activity=discord.Game(
-    name="☕猫の喫茶店でメイドとして勤務中"))
+	# work
+	await client.change_presence(activity=discord.Game(
+		name="☕猫の喫茶店でメイドとして勤務中"))
 
 
 TOKEN = os.getenv("discord")
 keep_alive()
 try:
-  client.run(TOKEN)
+	client.run(TOKEN)
 except:
-  os.system("kill 1")
+	os.system("kill 1")
