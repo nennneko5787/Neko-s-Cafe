@@ -130,10 +130,13 @@ async def on_message(message):
 				loop = asyncio.get_event_loop()
 
 				# Gemini APIを使って応答を生成 (非同期で実行)
-				response = await loop.run_in_executor(None, model.generate_content, prompt)
+				response = await loop.run_in_executor(None, model.generate_content, prompt, safety_settings={"HARASSMENT": "block_none", "SEXUALLY_EXPLICIT": "block_none", "HATE_SPEECH": "block_none", "DANGEROUS_CONTENT": "block_none"})
 
-				# 応答をテキストとして取得
-				text = response.text
+				try:
+					# 応答をテキストとして取得
+					text = response.text
+				except:
+					text = "メイドさんの機嫌が悪いらしい..."
 
 			# 最後にユーザーに返す
 			await message.reply(text)
