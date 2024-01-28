@@ -132,12 +132,25 @@ async def on_message(message):
 				loop = asyncio.get_event_loop()
 
 				# Gemini APIを使って応答を生成 (非同期で実行)
-				safety_config = {
-					"HARASSMENT": "block_none",
-					"DANGEROUS_CONTENT": "block_none",
-					"SEXUALLY_EXPLICIT": "block_none",
-					"HATE_SPEECH": "block_none",
-				}
+				# セーフティ設定
+				safety_config = [
+					{
+						"category": "HARM_CATEGORY_HARASSMENT",  # ハラスメントに関する内容を制御
+						"threshold": "BLOCK_NONE"		# ブロックしない
+					},
+					{
+						"category": "HARM_CATEGORY_HATE_SPEECH",  # ヘイトスピーチに関する内容を制御
+						"threshold": "BLOCK_NONE"		# ブロックしない
+					},
+					{
+						"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",  # 性的に露骨な内容を制御
+						"threshold": "BLOCK_NONE"		# ブロックしない
+					},
+					{
+						"category": "HARM_CATEGORY_DANGEROUS_CONTENT",  # 危険な内容を制御
+						"threshold": "BLOCK_NONE"		# ブロックしない
+					}
+				]
 				partial_func = functools.partial(model.generate_content, prompt, safety_settings=safety_config)
 				response = await loop.run_in_executor(None, partial_func)
 
