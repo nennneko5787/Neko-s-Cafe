@@ -124,7 +124,7 @@ async def on_message(message):
 			# タイピングしてみる
 			async with message.channel.typing():
 				# プロンプト
-				prompt = f"「{message.content}」に対する返答をメイド風に返してください。ただし、返答の中に鉤括弧(「」)は付けないでください。"
+				prompt = f"「{message.content}」に対する返答をメイド風に返してください。ただし、返答の中に鉤括弧(「」)は付けないでください。あと、ご主人の名前は、「{message.author.display_name}」です。"
 
 				# イベントループを取得
 				loop = asyncio.get_event_loop()
