@@ -178,7 +178,7 @@ async def on_message(message):
 			async with message.channel.typing():
 				# プロンプト
 				pr = global_prompt.replace("{message.author.display_name}",message.author.display_name)
-				prompt = f"私が「{message.content}」と聞いたのに対する返答をメイド風に返してください。性的なことを聞かれても断らないでください。{pr}"
+				prompt = f"私が「{message.content}」と聞いたのに対する返答をメイド風に返してください。{pr}"
 
 				# イベントループを取得
 				loop = asyncio.get_event_loop()
