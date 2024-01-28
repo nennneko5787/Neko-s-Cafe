@@ -7,6 +7,7 @@ import random
 import asyncio
 import concurrent.futures
 import google.generativeai as genai
+import functools
 import datetime
 
 # 接続に必要なオブジェクトを生成
@@ -130,7 +131,8 @@ async def on_message(message):
 				loop = asyncio.get_event_loop()
 
 				# Gemini APIを使って応答を生成 (非同期で実行)
-				response = await loop.run_in_executor(None, model.generate_content, prompt, safety_settings={"HARASSMENT": "block_none", "SEXUALLY_EXPLICIT": "block_none", "HATE_SPEECH": "block_none", "DANGEROUS_CONTENT": "block_none"})
+				partial_func = functools.partial(model.generate_content, prompt, safety_settings={"HARASSMENT": "block_none", "SEXUALLY_EXPLICIT": "block_none", "HATE_SPEECH": "block_none", "DANGEROUS_CONTENT": "block_none"})
+				response = await loop.run_in_executor(None, partial_func)
 
 				try:
 					# 応答をテキストとして取得
