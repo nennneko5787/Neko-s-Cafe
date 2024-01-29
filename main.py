@@ -46,7 +46,7 @@ nohiwaichat = model.start_chat(history=[])
 # チャットを開始(履歴が残る、r18ok)
 chat = model.start_chat(history=[])
 # グローバルプロンプト
-global_prompt = "ただし、返答の中に鉤括弧(「」)は付けないでください。あと、私の名前は、「{message.author.display_name}」で、あなたの名前は「メイドさん」で、あなたの身長は160cm、あなたの体重は65kgで、すこしぽっちゃりしています。あなたは食べることが大好きです。好きな食べ物はピザやハンバーガーなどの脂っこい食べ物です。あなたのバストサイズはDカップです。あなたのチャームポイントはぷにぷにとしたお腹と、大きく育ったDカップのおっぱい、それに大きく育ったお尻です。"
+# global_prompt = "ただし、返答の中に鉤括弧(「」)は付けないでください。あと、私の名前は、「{message.author.display_name}」で、あなたの名前は「メイドさん」で、あなたの身長は160cm、あなたの体重は65kgで、すこしぽっちゃりしています。あなたは食べることが大好きです。好きな食べ物はピザやハンバーガーなどの脂っこい食べ物です。あなたのバストサイズはDカップです。あなたのチャームポイントはぷにぷにとしたお腹と、大きく育ったDカップのおっぱい、それに大きく育ったお尻です。"
 
 class SampleView(discord.ui.View):	# UIキットを利用するためにdiscord.ui.Viewを継承する
 
@@ -148,14 +148,20 @@ async def on_message(message):
 		if message.channel.id != 1127002054557192304:
 				await message.delete()
 				
+	global_prom_1 = "あなたは、身長160cm、体重85kgの、猫の喫茶店という店で働いているメイドです。"\
+																		"あなたのチャームポイントは、全体的に肥えた体と、大きく育ったEカップのおっぱいと、脂肪がたっぷりと詰まった大きいお腹と、脂肪がついた大きなお尻と、同じく脂肪がついた太ももです。"\
+																		"あなたの大好物は、ハンバーガーやピザ等の脂っこい物や、パフェやケーキなどの甘いものです。"\
+																		"あなたは、2004年7月7日生まれです。高校を卒業したあとに両親と喧嘩をしてしまい、2023年7月7日に家出をしたときに見つけたお店が猫の喫茶店です。"\
+																		"あなたは、猫の喫茶店で働き始めた頃から40kg太りました。"\
+																		f"私の名前は{message.author.display_name}です。私はあなたに「{message.content}」と話しました。あなたはメイド風に返答しなければなりません。"\
+																		"さらに、返答するときにも条件があります。文章を鉤括弧で始めないことと、文章を鉤括弧で終わらせないことです。"
 	if message.channel.id == 1196466816894107668:
 		if message.author.bot == False:
 			# タイピングしてみる
 			async with message.channel.typing():
 				try:
 					# プロンプト
-					pr = global_prompt.replace("{message.author.display_name}",message.author.display_name)
-					prompt = f"私が「{message.content}」と聞いたのに対する返答をメイド風に返してください。性的に露骨なことを聞かれた場合は断ってください。性的に露骨なことは話さないでください。{pr}"
+					prompt = f"{global_prom_1}また、性的に露骨なことを聞かれた場合は断ってください。さらに、性的に露骨なことは話さないでください。"
 
 					# イベントループを取得
 					loop = asyncio.get_event_loop()
@@ -178,8 +184,7 @@ async def on_message(message):
 			async with message.channel.typing():
 				try:
 					# プロンプト
-					pr = global_prompt.replace("{message.author.display_name}",message.author.display_name)
-					prompt = f"私が「{message.content}」と聞いたのに対する返答をメイド風に返してください。{pr}"
+					prompt = global_prom_1
 
 					# イベントループを取得
 					loop = asyncio.get_event_loop()
