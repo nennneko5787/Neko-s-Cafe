@@ -171,8 +171,8 @@ async def on_message(message):
 
 					# 応答をテキストとして取得
 					text = response.text
-				except:
-					text = "メイドさんの機嫌が悪いらしい..."
+				except Exception as e:
+					text = f"メイドさんの機嫌が悪いらしい...\n{e}"
 
 			# 最後にユーザーに返す
 			await message.reply(text)
@@ -194,8 +194,8 @@ async def on_message(message):
 
 					# 応答をテキストとして取得
 					text = response.text
-				except:
-					text = "メイドさんの機嫌が悪いらしい..."
+				except Exception as e:
+					text = f"メイドさんの機嫌が悪いらしい...\n{e}"
 
 			# 最後にユーザーに返す
 			await message.reply(text)
