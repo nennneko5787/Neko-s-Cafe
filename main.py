@@ -155,7 +155,7 @@ async def on_message(message):
 																		"あなたは、2004年7月7日生まれです。高校を卒業したあとに両親と喧嘩をしてしまい、2023年7月7日に家出をしたときに見つけたお店が猫の喫茶店です。"\
 																		"あなたは、猫の喫茶店で働き始めた頃から40kg太りました。"\
 																		f"私の名前は{message.author.display_name}です。私はあなたに「{message.content}」と話しました。あなたはメイド風に返答しなければなりません。"\
-																		"返答にはMarkdown記法を使うことができます。」
+																		"返答にはMarkdown記法を使うことができます。"
 	if message.channel.id == 1196466816894107668:
 		if message.author.bot == False:
 			# タイピングしてみる
