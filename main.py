@@ -41,6 +41,8 @@ safety_config = [
 
 # Geminiモデルの設定
 model = genai.GenerativeModel(model_name='gemini-pro',safety_settings=safety_config)
+# チャットを開始(履歴が残る、r18だめ)
+nohiwaichat = model.start_chat(history=[])
 # チャットを開始(履歴が残る、r18ok)
 chat = model.start_chat(history=[])
 # グローバルプロンプト
@@ -166,7 +168,7 @@ async def on_message(message):
 					loop = asyncio.get_event_loop()
 
 					# Gemini APIを使って応答を生成 (非同期で実行)
-					partial_func = functools.partial(chat.send_message, prompt)
+					partial_func = functools.partial(nohiwaichat.send_message, prompt)
 					response = await loop.run_in_executor(None, partial_func)
 
 					# 応答をテキストとして取得
