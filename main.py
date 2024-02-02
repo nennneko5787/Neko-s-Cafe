@@ -41,6 +41,8 @@ safety_config = [
 
 # Geminiモデルの設定
 model = genai.GenerativeModel(model_name='gemini-pro',safety_settings=safety_config)
+global chat
+global nohiwaichat
 # チャットを開始(履歴が残る、r18だめ)
 nohiwaichat = model.start_chat(history=[])
 # チャットを開始(履歴が残る、r18ok)
