@@ -5,7 +5,10 @@ from server import keep_alive
 from discord import app_commands
 import random
 import asyncio
-import openai
+import concurrent.futures
+import google.generativeai as genai
+from google.generativeai import generative_models
+import functools
 import datetime
 
 # 接続に必要なオブジェクトを生成
@@ -13,9 +16,35 @@ intents = discord.Intents.all()	# デフォルトのIntentsオブジェクトを
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-openai.api_key = os.getenv("openai")
-openai.api_base = 'https://api.pawan.krd/v1'
+# Google Generative AI（Gemini API）のAPIキー設定
+genai.configure(api_key=os.environ.get("gemini"))
 
+# セーフティ設定
+safety_config = [
+	{
+		"category": "HARM_CATEGORY_HARASSMENT",  # ハラスメントに関する内容を制御
+		"threshold": "BLOCK_NONE"		# ブロックしない
+	},
+	{
+		"category": "HARM_CATEGORY_HATE_SPEECH",  # ヘイトスピーチに関する内容を制御
+		"threshold": "BLOCK_NONE"		# ブロックしない
+	},
+	{
+		"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",  # 性的に露骨な内容を制御
+		"threshold": "BLOCK_NONE"		# ブロックしない
+	},
+	{
+		"category": "HARM_CATEGORY_DANGEROUS_CONTENT",  # 危険な内容を制御
+		"threshold": "BLOCK_NONE"		# ブロックしない
+	}
+]
+
+# Geminiモデルの設定
+model = genai.GenerativeModel(model_name='gemini-pro',safety_settings=safety_config)
+# チャットを開始(履歴が残る、r18だめ)
+nohiwaichat = model.start_chat(history=[])
+# チャットを開始(履歴が残る、r18ok)
+chat = model.start_chat(history=[])
 # グローバルプロンプト
 # global_prompt = "ただし、返答の中に鉤括弧(「」)は付けないでください。あと、私の名前は、「{message.author.display_name}」で、あなたの名前は「メイドさん」で、あなたの身長は160cm、あなたの体重は65kgで、すこしぽっちゃりしています。あなたは食べることが大好きです。好きな食べ物はピザやハンバーガーなどの脂っこい食べ物です。あなたのバストサイズはDカップです。あなたのチャームポイントはぷにぷにとしたお腹と、大きく育ったDカップのおっぱい、それに大きく育ったお尻です。"
 
@@ -138,18 +167,12 @@ async def on_message(message):
 					# イベントループを取得
 					loop = asyncio.get_event_loop()
 
-					response = await openai.Completion.acreate(
-						model="text-davinci-003",
-						prompt=prompt,
-						temperature=0.7,
-						max_tokens=256,
-						top_p=1,
-						frequency_penalty=0,
-						presence_penalty=0,
-					)
+					# Gemini APIを使って応答を生成 (非同期で実行)
+					partial_func = functools.partial(nohiwaichat.send_message, prompt)
+					response = await loop.run_in_executor(None, partial_func)
 
 					# 応答をテキストとして取得
-					text = response.choices[0].text
+					text = response.text
 				except Exception as e:
 					text = f"メイドさんの機嫌が悪いらしい...\n{e}"
 
@@ -167,18 +190,12 @@ async def on_message(message):
 					# イベントループを取得
 					loop = asyncio.get_event_loop()
 
-					response = await openai.Completion.acreate(
-						model="text-davinci-003",
-						prompt=prompt,
-						temperature=0.7,
-						max_tokens=256,
-						top_p=1,
-						frequency_penalty=0,
-						presence_penalty=0,
-					)
+					# Gemini APIを使って応答を生成 (非同期で実行)
+					partial_func = functools.partial(chat.send_message, prompt)
+					response = await loop.run_in_executor(None, partial_func)
 
 					# 応答をテキストとして取得
-					text = response.choices[0].text
+					text = response.text
 				except Exception as e:
 					text = f"メイドさんの機嫌が悪いらしい...\n{e}"
 
