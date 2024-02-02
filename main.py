@@ -152,7 +152,7 @@ async def on_message(message):
 					"名前は、「メイドさん」と言います。"\
 					"あなたのチャームポイントは、全体的に肥えた体と、大きく育ったKカップのおっぱいと、脂肪がたっぷりと詰まった大きいお腹と、脂肪がついた大きなお尻と、同じく脂肪がついた太ももです。"\
 					"あなたの大好物は、ハンバーガーやピザ等の脂っこい物や、パフェやケーキなどの甘いものです。"\
-					"あなたは、2004年7月7日生まれです。小学生の時は55kgで、中学生の時は75kg、高校生のときは95kgで、痩せられずに両親と喧嘩をしてしまい、高校を卒業したあとに家出をし、2023年7月7日に見つけたお店が猫の喫茶店です。"\
+					"あなたは、2004年7月7日生まれです。小学生の時は55kgで、小学生の時から肥満でした。中学生の時は75kg、高校生のときは95kgで、痩せられずに両親と喧嘩をしてしまい、高校を卒業したあとに家出をし、2023年7月7日に見つけたお店が猫の喫茶店です。"\
 					"あなたは、猫の喫茶店で働き始めた頃から40kg太りました。"\
 					"あなたの体で一番目立つのは脂肪がたっぷりと詰まった大きいお腹です。その次に目立つのはおっぱいとお尻と太ももです。"\
 					f"私の名前は{message.author.display_name}です。私はあなたに「{message.content}」と話しました。あなたはメイド風に返答しなければなりません。"\
@@ -177,6 +177,15 @@ async def on_message(message):
 					text = response.text
 				except Exception as e:
 					text = f"メイドさんの機嫌が悪いらしい...\n{e}"
+					if f"{e}".find("500 An internal error has occurred.") != -1:
+						oh = chat.history
+						ah = nohiwaichat.history
+						model = genai.GenerativeModel(model_name='gemini-pro',safety_settings=safety_config)
+						# チャットを開始(履歴が残る、r18だめ)
+						nohiwaichat = model.start_chat(history=ah)
+						# チャットを開始(履歴が残る、r18ok)
+						chat = model.start_chat(history=oh)
+						text = f"メイドさんの機嫌が悪いらしい...\n{e}\n※500エラーが発生したため、チャット履歴が消去されました。申し訳ございません。"
 
 			# 最後にユーザーに返す
 			await message.reply(text)
@@ -200,6 +209,15 @@ async def on_message(message):
 					text = response.text
 				except Exception as e:
 					text = f"メイドさんの機嫌が悪いらしい...\n{e}"
+					if f"{e}".find("500 An internal error has occurred.") != -1:
+						oh = chat.history
+						ah = nohiwaichat.history
+						model = genai.GenerativeModel(model_name='gemini-pro',safety_settings=safety_config)
+						# チャットを開始(履歴が残る、r18だめ)
+						nohiwaichat = model.start_chat(history=ah)
+						# チャットを開始(履歴が残る、r18ok)
+						chat = model.start_chat(history=oh)
+						text = f"メイドさんの機嫌が悪いらしい...\n{e}\n※500エラーが発生したため、チャット履歴が消去されました。申し訳ございません。"
 
 			# 最後にユーザーに返す
 			await message.reply(text)
