@@ -41,8 +41,6 @@ safety_config = [
 
 # Geminiモデルの設定
 model = genai.GenerativeModel(model_name='gemini-pro',safety_settings=safety_config)
-global chat
-global nohiwaichat
 # チャットを開始(履歴が残る、r18だめ)
 nohiwaichat = model.start_chat(history=[])
 # チャットを開始(履歴が残る、r18ok)
@@ -179,15 +177,6 @@ async def on_message(message):
 					text = response.text
 				except Exception as e:
 					text = f"メイドさんの機嫌が悪いらしい...\n{e}"
-					if f"{e}".find("500 An internal error has occurred.") != -1:
-						oh = chat.history
-						ah = nohiwaichat.history
-						model = genai.GenerativeModel(model_name='gemini-pro',safety_settings=safety_config)
-						# チャットを開始(履歴が残る、r18だめ)
-						nohiwaichat = model.start_chat(history=ah)
-						# チャットを開始(履歴が残る、r18ok)
-						chat = model.start_chat(history=oh)
-						text = f"メイドさんの機嫌が悪いらしい...\n{e}\n※500エラーが発生したため、チャット履歴が消去されました。申し訳ございません。"
 
 			# 最後にユーザーに返す
 			await message.reply(text)
@@ -211,15 +200,6 @@ async def on_message(message):
 					text = response.text
 				except Exception as e:
 					text = f"メイドさんの機嫌が悪いらしい...\n{e}"
-					if f"{e}".find("500 An internal error has occurred.") != -1:
-						oh = chat.history
-						ah = nohiwaichat.history
-						model = genai.GenerativeModel(model_name='gemini-pro',safety_settings=safety_config)
-						# チャットを開始(履歴が残る、r18だめ)
-						nohiwaichat = model.start_chat(history=ah)
-						# チャットを開始(履歴が残る、r18ok)
-						chat = model.start_chat(history=oh)
-						text = f"メイドさんの機嫌が悪いらしい...\n{e}\n※500エラーが発生したため、チャット履歴が消去されました。申し訳ございません。"
 
 			# 最後にユーザーに返す
 			await message.reply(text)
