@@ -137,6 +137,20 @@ async def jannkenn(interaction: discord.Interaction, text: str):
 		await interaction.response.send_message("何かがおかしいぞ！ｗ", view=view)
 
 
+@tree.command(name="deletemsghistory", description="AIとの会話の履歴を削除します")
+@discord.app_commands.choices(text=[
+	discord.app_commands.Choice(name="ノーマルチャットの履歴を削除", value="0"),
+	discord.app_commands.Choice(name="R18チャットの履歴を削除", value="1")
+])
+async def jannkenn(interaction: discord.Interaction, text: str):
+	selected = int(text)
+	if selected == 0:
+		nohiwaichat.history = None
+	elif selected == 1:
+		chat.history = None
+		await interaction.response.send_message("削除しました。")
+
+
 @client.event
 async def on_message(message):
 	if message.author.id == 562987075326967809:
