@@ -148,7 +148,7 @@ async def jannkenn(interaction: discord.Interaction, text: str):
 		nohiwaichat.history = None
 	elif selected == 1:
 		chat.history = None
-		await interaction.response.send_message("削除しました。")
+		await interaction.response.send_message("会話履歴を削除しました。")
 
 
 @client.event
