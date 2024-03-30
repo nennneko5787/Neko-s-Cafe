@@ -236,7 +236,7 @@ async def on_message(message: discord.Message):
 					# プロンプト
 					prompt = f"私の名前は{message.author.display_name}です。私は「{message.clean_content}」と話しました。あなたは回答を考え、その回答の「な」を「にゃ」に置き換え、語尾に「にゃ。」を付けて出力してください。"
 					if message.type == discord.MessageType.reply:
-						prompt += f"\nちなみに私は{message.reference.cached_message.author.display_name}さんの「{message.reference.cached_message.clean_content}」に返信しています。"
+						prompt += f"\nちなみに私は{message.reference.resolved.author.display_name}さんの「{message.reference.resolved.clean_content}」に返信しています。"
 
 					# イベントループを取得
 					loop = asyncio.get_event_loop()
