@@ -150,16 +150,20 @@ async def jannkenn(interaction: discord.Interaction, text: str):
 @tree.command(name="deletemsghistory", description="AIとの会話の履歴を削除します")
 @discord.app_commands.choices(text=[
 	discord.app_commands.Choice(name="ノーマルチャットの履歴を削除", value="0"),
-	discord.app_commands.Choice(name="R18チャットの履歴を削除", value="1")
+	discord.app_commands.Choice(name="R18チャットの履歴を削除", value="1"),
+	discord.app_commands.Choice(name="ﾈｯｺGPTの履歴を削除", value="2")
 ])
 async def jannkenn(interaction: discord.Interaction, text: str):
 	selected = int(text)
 	if selected == 0:
 		nohiwaichat.history = None
+		await interaction.response.send_message("会話履歴を削除しました。")
 	elif selected == 1:
 		chat.history = None
 		await interaction.response.send_message("会話履歴を削除しました。")
-
+	elif selected == 2:
+		nekkogpt.history = None
+		await interaction.response.send_message("会話履歴を削除しました。")
 
 @client.event
 async def on_message(message: discord.Message):
@@ -234,7 +238,7 @@ async def on_message(message: discord.Message):
 			async with message.channel.typing():
 				try:
 					# プロンプト
-					prompt = f"私の名前は{message.author.display_name}です。私は「{message.clean_content}」と話しました。あなたは回答を考え、その回答の「な」を「にゃ」に置き換え、語尾に「にゃ。」を付けて出力してください。"
+					prompt = f"私の名前は{message.author.display_name}です。私は「{message.clean_content}」と話しました。あなたは回答を考え、猫のように喋り、語尾に「にゃ。」を付けて出力してください。"
 					if message.type == discord.MessageType.reply:
 						prompt += f"\nちなみに私は{message.reference.resolved.author.display_name}さんの「{message.reference.resolved.clean_content}」に返信しています。"
 
