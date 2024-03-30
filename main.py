@@ -244,12 +244,12 @@ async def on_message(message):
 					response = await loop.run_in_executor(None, partial_func)
 
 					# 応答をテキストとして取得
-					text = response.text.replace("な","にゃ")
+					text = response.text
 				except Exception as e:
 					text = f"機嫌が悪いらしい...\n```py\n{e}\n```"
 
 			# 最後にユーザーに返す
-			await message.reply(text)
+			await message.reply(text.replace("な","にゃ"))
 
 	if message.type == discord.MessageType.premium_guild_subscription:
 		channel = client.get_channel(1195688699598491708)
