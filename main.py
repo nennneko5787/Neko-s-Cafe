@@ -234,7 +234,7 @@ async def on_message(message):
 			async with message.channel.typing():
 				try:
 					# プロンプト
-					prompt = f"私は「{message.clean_content}」と話しました。あなたは文章中の「な」を「にゃ」に置き換え、語尾に「にゃ。」を付けて出力してください。"
+					prompt = f"私は「{message.clean_content}」と話しました。あなたは回答を考え、その回答の「な」を「にゃ」に置き換え、語尾に「にゃ。」を付けて出力してください。"
 
 					# イベントループを取得
 					loop = asyncio.get_event_loop()
