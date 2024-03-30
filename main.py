@@ -234,7 +234,7 @@ async def on_message(message):
 			async with message.channel.typing():
 				try:
 					# プロンプト
-					prompt = message.clean_content
+					prompt = f"私は「{message.clean_content}」と話しました。あなたは文章中の「な」を「にゃ」に置き換え、語尾に「にゃ。」を付けて出力してください。"
 
 					# イベントループを取得
 					loop = asyncio.get_event_loop()
@@ -249,7 +249,7 @@ async def on_message(message):
 					text = f"機嫌が悪いらしい...\n```py\n{e}\n```"
 
 			# 最後にユーザーに返す
-			await message.reply(text.replace("な","にゃ"))
+			await message.reply(text)
 
 	if message.type == discord.MessageType.premium_guild_subscription:
 		channel = client.get_channel(1195688699598491708)
