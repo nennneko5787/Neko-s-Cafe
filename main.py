@@ -55,6 +55,7 @@ nekkogpt = model.start_chat(history=[])
 nohiwaichat = model.start_chat(history=[])
 # チャットを開始(履歴が残る、r18ok)
 chat = model.start_chat(history=[])
+tunderechat = model.start_chat(history=[])
 # グローバルプロンプト
 # global_prompt = "ただし、返答の中に鉤括弧(「」)は付けないでください。あと、私の名前は、「{message.author.display_name}」で、あなたの名前は「メイドさん」で、あなたの身長は160cm、あなたの体重は65kgで、すこしぽっちゃりしています。あなたは食べることが大好きです。好きな食べ物はピザやハンバーガーなどの脂っこい食べ物です。あなたのバストサイズはDカップです。あなたのチャームポイントはぷにぷにとしたお腹と、大きく育ったDカップのおっぱい、それに大きく育ったお尻です。"
 
@@ -152,6 +153,7 @@ async def jannkenn(interaction: discord.Interaction, text: str):
 	discord.app_commands.Choice(name="ノーマルチャットの履歴を削除", value="0"),
 	discord.app_commands.Choice(name="R18チャットの履歴を削除", value="1"),
 	discord.app_commands.Choice(name="ﾈｯｺGPTの履歴を削除", value="2")
+  discord.app_commands.Choice(name="ツンデレの履歴を削除", value="2")
 ])
 async def jannkenn(interaction: discord.Interaction, text: str):
 	selected = int(text)
@@ -163,6 +165,9 @@ async def jannkenn(interaction: discord.Interaction, text: str):
 		await interaction.response.send_message("会話履歴を削除しました。")
 	elif selected == 2:
 		nekkogpt.history = None
+		await interaction.response.send_message("会話履歴を削除しました。")
+	elif selected == 2:
+		tunderechat.history = None
 		await interaction.response.send_message("会話履歴を削除しました。")
 
 @client.event
@@ -238,7 +243,7 @@ async def on_message(message: discord.Message):
 			async with message.channel.typing():
 				try:
 					# プロンプト
-					prompt = "私は{message.author.display_name}です。あなたは私のことが大好きなツンデレです。なので、ツンデレのように出力してください。"
+					prompt = "私は{message.author.display_name}です。あなたの名前は桜木 遥です。あなたは私のことが大好きなツンデレです。なので、ツンデレのように出力してください。"
 					if message.type == discord.MessageType.reply:
 						prompt += f"\nちなみに私は{message.reference.resolved.author.display_name}さんの「{message.reference.resolved.clean_content}」に返信しています。"
 
@@ -246,13 +251,13 @@ async def on_message(message: discord.Message):
 					loop = asyncio.get_event_loop()
 
 					# Gemini APIを使って応答を生成 (非同期で実行)
-					partial_func = functools.partial(chat.send_message, prompt)
+					partial_func = functools.partial(tunderechat.send_message, prompt)
 					response = await loop.run_in_executor(None, partial_func)
 
 					# 応答をテキストとして取得
 					text = response.text
 				except Exception as e:
-					text = f"メイドさんの機嫌が悪いらしい...\n{e}"
+					text = f"これが本当のツンデレ なんつって\n{e}"
 
 			# 最後にユーザーに返す
 			await message.reply(text)
