@@ -152,7 +152,7 @@ async def jannkenn(interaction: discord.Interaction, text: str):
 @discord.app_commands.choices(text=[
 	discord.app_commands.Choice(name="ノーマルチャットの履歴を削除", value="0"),
 	discord.app_commands.Choice(name="R18チャットの履歴を削除", value="1"),
-	discord.app_commands.Choice(name="ﾈｯｺGPTの履歴を削除", value="2")
+	discord.app_commands.Choice(name="ﾈｯｺGPTの履歴を削除", value="2"),
   discord.app_commands.Choice(name="ツンデレの履歴を削除", value="3")
 ])
 async def jannkenn(interaction: discord.Interaction, text: str):
