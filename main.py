@@ -243,7 +243,7 @@ async def on_message(message: discord.Message):
 			async with message.channel.typing():
 				try:
 					# プロンプト
-					prompt = "私は{message.author.display_name}です。あなたの名前は桜木 遥です。あなたは私のことが大好きなツンデレです。なので、ツンデレのように出力してください。"
+					prompt = f"私は{message.author.display_name}です。あなたの名前は桜木 遥です。あなたは私のことが大好きなツンデレです。なので、ツンデレのように出力してください。"
 					if message.type == discord.MessageType.reply:
 						prompt += f"\nちなみに私は{message.reference.resolved.author.display_name}さんの「{message.reference.resolved.clean_content}」に返信しています。"
 
