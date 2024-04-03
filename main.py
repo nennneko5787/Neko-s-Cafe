@@ -231,6 +231,31 @@ async def on_message(message: discord.Message):
 
 			# 最後にユーザーに返す
 			await message.reply(text)
+      
+	if message.channel.id == 1225063984571482122:
+		if message.author.bot == False:
+			# タイピングしてみる
+			async with message.channel.typing():
+				try:
+					# プロンプト
+					prompt = "私は{message.author.display_name}です。あなたは私のことが大好きなツンデレです。なので、ツンデレのように出力してください。"
+					if message.type == discord.MessageType.reply:
+						prompt += f"\nちなみに私は{message.reference.resolved.author.display_name}さんの「{message.reference.resolved.clean_content}」に返信しています。"
+
+					# イベントループを取得
+					loop = asyncio.get_event_loop()
+
+					# Gemini APIを使って応答を生成 (非同期で実行)
+					partial_func = functools.partial(chat.send_message, prompt)
+					response = await loop.run_in_executor(None, partial_func)
+
+					# 応答をテキストとして取得
+					text = response.text
+				except Exception as e:
+					text = f"メイドさんの機嫌が悪いらしい...\n{e}"
+
+			# 最後にユーザーに返す
+			await message.reply(text)
 					
 	if message.channel.id == 1223481175679697091:
 		if message.author.bot == False:
