@@ -260,7 +260,7 @@ async def on_message(message: discord.Message):
 					text = f"これが本当のツンデレ なんつって\n{e}"
 
 			# 最後にユーザーに返す
-			await message.reply(text)
+			await message.reply(text, allowed_mentions=discord.AllowedMentions.none())
 					
 	if message.channel.id == 1223481175679697091:
 		if message.author.bot == False:
@@ -285,7 +285,7 @@ async def on_message(message: discord.Message):
 					text = f"機嫌が悪いらしい...\n```py\n{e}\n```"
 
 			# 最後にユーザーに返す
-			await message.reply(text)
+			await message.reply(text, allowed_mentions=discord.AllowedMentions.none())
 
 	if message.type == discord.MessageType.premium_guild_subscription:
 		channel = client.get_channel(1195688699598491708)
